@@ -9,7 +9,7 @@ import (
 
 // Open a terminal in raw mode at 19200 baud.
 func ExampleOpen() {
-	Open("/dev/ttyUSB0", Speed(19200), RawMode)
+	Open("/dev/ttyUSB0", Speed(19200), RawMode(1))
 }
 
 // Reset an Arduino by toggling the DTR signal.

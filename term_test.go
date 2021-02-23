@@ -31,7 +31,7 @@ var _ interface {
 	SetDTR(v bool) error
 	SetOption(options ...func(*Term) error) error
 	SetRTS(v bool) error
-	SetRaw() error
+	SetRaw(uint82 uint8) error
 	SetSpeed(baud int) error
 	GetSpeed() (int, error)
 	Write(b []byte) (int, error)
@@ -48,7 +48,7 @@ func TestTermSetCbreak(t *testing.T) {
 func TestTermSetRaw(t *testing.T) {
 	tt := opendev(t)
 	defer tt.Close()
-	if err := tt.SetRaw(); err != nil {
+	if err := tt.SetRaw(1); err != nil {
 		t.Fatal(err)
 	}
 }

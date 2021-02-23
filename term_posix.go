@@ -59,18 +59,21 @@ func CBreakMode(t *Term) error {
 }
 
 // SetRaw sets raw mode.
-func (t *Term) SetRaw() error {
-	return t.SetOption(RawMode)
+func (t *Term) SetRaw(min uint8) error {
+	return t.SetOption(RawMode(min))
 }
 
 // RawMode places the terminal into raw mode.
-func RawMode(t *Term) error {
-	a, err := termios.Tcgetattr(uintptr(t.fd))
-	if err != nil {
-		return err
+func RawMode(min uint8) func(*Term) error {
+	return func(t *Term) error {
+
+		a, err := termios.Tcgetattr(uintptr(t.fd))
+		if err != nil {
+			return err
+		}
+		termios.Cfmakeraw(a, min)
+		return termios.Tcsetattr(uintptr(t.fd), termios.TCSANOW, a)
 	}
-	termios.Cfmakeraw(a)
-	return termios.Tcsetattr(uintptr(t.fd), termios.TCSANOW, a)
 }
 
 // Speed sets the baud rate option for the terminal.

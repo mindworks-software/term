@@ -39,12 +39,12 @@ func Cfmakecbreak(attr *unix.Termios) {
 }
 
 // Cfmakeraw modifies attr for raw mode.
-func Cfmakeraw(attr *unix.Termios) {
+func Cfmakeraw(attr *unix.Termios, min uint8) {
 	attr.Iflag &^= unix.BRKINT | unix.ICRNL | unix.INPCK | unix.ISTRIP | unix.IXON
 	attr.Oflag &^= unix.OPOST
 	attr.Cflag &^= unix.CSIZE | unix.PARENB
 	attr.Cflag |= unix.CS8
 	attr.Lflag &^= unix.ECHO | unix.ICANON | unix.IEXTEN | unix.ISIG
-	attr.Cc[unix.VMIN] = 1
+	attr.Cc[unix.VMIN] = min
 	attr.Cc[unix.VTIME] = 0
 }
